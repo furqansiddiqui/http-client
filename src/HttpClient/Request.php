@@ -25,6 +25,8 @@ class Request
     private $headers;
     /** @var bool */
     private $secure;
+    /** @var Authentication */
+    private $authentication;
 
     /**
      * Request constructor.
@@ -52,50 +54,7 @@ class Request
         $this->headers  =   [];
         $this->checkSSL =   true;
         $this->secure   =   substr($url, 0, 5)  === "https" ? true : false;
-    }
-
-    /**
-     * Initialize a new GET request
-     *
-     * @param string $url
-     * @return Request
-     */
-    public static function Get(string $url) : self
-    {
-        return new self($url, "GET");
-    }
-
-    /**
-     * Initialize a new POST request
-     *
-     * @param string $url
-     * @return Request
-     */
-    public static function Post(string $url) : self
-    {
-        return new self($url, "POST");
-    }
-
-    /**
-     * Initialize a new PUT request
-     *
-     * @param string $url
-     * @return Request
-     */
-    public static function Put(string $url) : self
-    {
-        return new self($url, "PUT");
-    }
-
-    /**
-     * Initialize a new DELETE request
-     *
-     * @param string $url
-     * @return Request
-     */
-    public static function Delete(string $url) : self
-    {
-        return new self($url, "DELETE");
+        $this->authentication   =   new Authentication();
     }
 
     /**
@@ -252,5 +211,21 @@ class Request
         }
 
         return $this;
+    }
+
+    /**
+     * @return Authentication
+     */
+    public function authentication() : Authentication
+    {
+        return $this->authentication;
+    }
+
+    /**
+     * @return Response
+     */
+    public function send() : Response
+    {
+        return \HttpClient::Send($this);
     }
 }

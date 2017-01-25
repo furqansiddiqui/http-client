@@ -6,14 +6,58 @@ declare(strict_types=1);
  */
 class HttpClient
 {
-    const VERSION   =   "0.1.0";
+    const VERSION   =   "0.2.0";
+
+    /**
+     * Initialize a new GET request
+     *
+     * @param string $url
+     * @return \HttpClient\Request
+     */
+    public static function Get(string $url) : \HttpClient\Request
+    {
+        return new \HttpClient\Request($url, "GET");
+    }
+
+    /**
+     * Initialize a new POST request
+     *
+     * @param string $url
+     * @return \HttpClient\Request
+     */
+    public static function Post(string $url) : \HttpClient\Request
+    {
+        return new \HttpClient\Request($url, "POST");
+    }
+
+    /**
+     * Initialize a new PUT request
+     *
+     * @param string $url
+     * @return \HttpClient\Request
+     */
+    public static function Put(string $url) : \HttpClient\Request
+    {
+        return new \HttpClient\Request($url, "PUT");
+    }
+
+    /**
+     * Initialize a new DELETE request
+     *
+     * @param string $url
+     * @return \HttpClient\Request
+     */
+    public static function Delete(string $url) : \HttpClient\Request
+    {
+        return new \HttpClient\Request($url, "DELETE");
+    }
 
     /**
      * @param \HttpClient\Request $request
      * @return \HttpClient\Response
      * @throws HttpClientException
      */
-    public static function Request(\HttpClient\Request $request) : \HttpClient\Response
+    public static function Send(\HttpClient\Request $request) : \HttpClient\Response
     {
         self::Test(); // Prerequisites Check
         $opts   =   $request->getOpts();
@@ -53,6 +97,9 @@ class HttpClient
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         }
 
+        // Authentication
+        $request->authentication()->register($ch);
+
         // Prepare response
         $response   =   new \HttpClient\Response();
 
@@ -77,7 +124,6 @@ class HttpClient
                 sprintf('[%1$d] %2$s', $error[0], $error[1])
             );
         }
-
 
         // Write body
         $bodyType   =   strtolower(trim(explode(";", $response->getHeader("Content-Type"))[0]));
