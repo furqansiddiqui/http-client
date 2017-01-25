@@ -10,6 +10,10 @@
   "autoload": {
     "psr-4": {
       "HttpClient\\": ["src/"]
-    }
+    },
+    "files": [
+      "src/HttpClient.php",
+      "src/HttpClientException.php"
+    ]
   }
 }
