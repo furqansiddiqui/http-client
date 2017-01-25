@@ -1,2 +1,4 @@
 [Tt]humbs.db
-.idea/
+.DS_Store
+.idea/workspace.xml
+.idea/tasks.xml
