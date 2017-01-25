@@ -9,7 +9,7 @@
   },
   "autoload": {
     "psr-4": {
-      "HttpClient\\": ["src/HttpClient/"]
+      "HttpClient\\": ["src/HttpClient"]
     },
     "files": [
       "src/HttpClient.php",
