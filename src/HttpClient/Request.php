@@ -57,7 +57,7 @@ class Request
 
         $this->method   =   $method;
         $this->headers  =   [];
-        $this->url  =   $this->setUrl($url ?? "http://localhost");
+        $this->setUrl($url ?? "http://localhost");
         $this->ssl  =   new SSL();
         $this->ssl->check(true);
         $this->authentication   =   new Authentication();
