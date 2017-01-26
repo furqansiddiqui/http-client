@@ -22,10 +22,10 @@ class HttpClient
     /**
      * Initialize a new GET request
      *
-     * @param string $url
+     * @param string|null $url
      * @return \HttpClient\Request
      */
-    public static function Get(string $url) : \HttpClient\Request
+    public static function Get(string $url = null) : \HttpClient\Request
     {
         return new \HttpClient\Request($url, "GET");
     }
@@ -33,10 +33,10 @@ class HttpClient
     /**
      * Initialize a new POST request
      *
-     * @param string $url
+     * @param string|null $url
      * @return \HttpClient\Request
      */
-    public static function Post(string $url) : \HttpClient\Request
+    public static function Post(string $url = null) : \HttpClient\Request
     {
         return new \HttpClient\Request($url, "POST");
     }
@@ -44,10 +44,10 @@ class HttpClient
     /**
      * Initialize a new PUT request
      *
-     * @param string $url
+     * @param string|null $url
      * @return \HttpClient\Request
      */
-    public static function Put(string $url) : \HttpClient\Request
+    public static function Put(string $url = null) : \HttpClient\Request
     {
         return new \HttpClient\Request($url, "PUT");
     }
@@ -55,10 +55,10 @@ class HttpClient
     /**
      * Initialize a new DELETE request
      *
-     * @param string $url
+     * @param string|null $url
      * @return \HttpClient\Request
      */
-    public static function Delete(string $url) : \HttpClient\Request
+    public static function Delete(string $url = null) : \HttpClient\Request
     {
         return new \HttpClient\Request($url, "DELETE");
     }
