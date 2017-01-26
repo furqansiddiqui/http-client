@@ -17,7 +17,7 @@ declare(strict_types=1);
  */
 class HttpClient
 {
-    const VERSION   =   "0.2.0";
+    const VERSION   =   "0.2.1";
 
     /**
      * Initialize a new GET request
@@ -77,18 +77,8 @@ class HttpClient
         curl_setopt($ch, CURLOPT_URL, $opts["url"]); // Set URL
 
         // SSL
-        if($opts["secure"]) {
-            if(!(curl_version()["features"] &   CURL_VERSION_SSL)) {
-                throw new HttpClientException('SSL support is unavailable');
-            }
-
-            if($opts["checkSSL"]    === false) {
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-            } else {
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-            }
+        if($opts["https"]) {
+            $request->ssl()->register($ch);
         }
 
         // Request Method & Payload

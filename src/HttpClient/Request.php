@@ -22,8 +22,6 @@ class Request
 {
     /** @var string|null */
     private $accept;
-    /** @var bool */
-    private $checkSSL;
     /** @var string */
     private $url;
     /** @var string */
@@ -35,7 +33,9 @@ class Request
     /** @var array */
     private $headers;
     /** @var bool */
-    private $secure;
+    private $https;
+    /** @var SSL */
+    private $ssl;
     /** @var Authentication */
     private $authentication;
 
@@ -63,8 +63,9 @@ class Request
         $this->method   =   $method;
         $this->url  =   $url;
         $this->headers  =   [];
-        $this->checkSSL =   true;
-        $this->secure   =   substr($url, 0, 5)  === "https" ? true : false;
+        $this->https    =   substr($url, 0, 5)  === "https" ? true : false;
+        $this->ssl  =   new SSL();
+        $this->ssl->check(true);
         $this->authentication   =   new Authentication();
     }
 
@@ -75,10 +76,9 @@ class Request
     {
         return [
             "accept"    =>  $this->accept,
-            "checkSSL"  =>  $this->checkSSL,
             "method"    =>  $this->method,
-            "secure"    =>  $this->secure,
-            "url"   =>  $this->url
+            "url"   =>  $this->url,
+            "https" =>  $this->https
         ];
     }
 
@@ -92,8 +92,16 @@ class Request
      */
     public function checkSSL(bool $check) : self
     {
-        $this->checkSSL =   $check;
+        $this->ssl->check($check);
         return $this;
+    }
+
+    /**
+     * @return SSL
+     */
+    public function ssl() : SSL
+    {
+        return $this->ssl;
     }
 
     /**
