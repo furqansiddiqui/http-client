@@ -45,13 +45,8 @@ class Request
      * @param string $url
      * @throws \HttpClientException
      */
-    public function __construct(string $url, string $method = "GET")
+    public function __construct(string $url = null, string $method = "GET")
     {
-        // Check if URL looks acceptable
-        if(!preg_match('/^(http|https):\/\/.*$/', $url)) {
-            throw new \HttpClientException('Invalid URL');
-        }
-
         // Check request method
         $method =   strtoupper($method);
         if(!in_array($method, ["GET","POST","PUT","DELETE"])) {
@@ -61,12 +56,27 @@ class Request
         }
 
         $this->method   =   $method;
-        $this->url  =   $url;
         $this->headers  =   [];
-        $this->https    =   substr($url, 0, 5)  === "https" ? true : false;
+        $this->url  =   $this->setUrl($url ?? "http://localhost");
         $this->ssl  =   new SSL();
         $this->ssl->check(true);
         $this->authentication   =   new Authentication();
+    }
+
+    /**
+     * @param string $url
+     * @return Request
+     * @throws \HttpClientException
+     */
+    public function setUrl(string $url) : self
+    {
+        if(!preg_match('/^(http|https):\/\/.*$/', $url)) {
+            throw new \HttpClientException('Invalid URL');
+        }
+
+        $this->url  =   $url;
+        $this->https    =   strtolower(substr($url, 0, 5))  === "https" ? true : false;
+        return $this;
     }
 
     /**
