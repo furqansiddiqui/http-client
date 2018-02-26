@@ -49,7 +49,7 @@ class Request
      * @param string $url
      * @throws HttpClientException
      */
-    public function __construct(string $method = "GET", string $url)
+    public function __construct(string $method, string $url)
     {
         // Check request method
         $method = strtoupper($method);
