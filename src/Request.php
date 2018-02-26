@@ -3,7 +3,7 @@
  * This file is a part of "furqansiddiqui/http-client" package.
  * https://github.com/furqansiddiqui/http-client
  *
- * Copyright (c) 2018. Furqan A. Siddiqui <hello@furqansiddiqui.com>
+ * Copyright (c) 2018 Furqan A. Siddiqui <hello@furqansiddiqui.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code or visit following link:
@@ -136,11 +136,14 @@ class Request
 
     /**
      * @return HttpClientResponse
+     * @throws HttpClientException
      * @throws RequestException
      * @throws ResponseException
      */
     public function send(): HttpClientResponse
     {
+        HttpClient::Test(); // Prerequisites check
+
         $ch = curl_init(); // Init cURL handler
         curl_setopt($ch, CURLOPT_URL, $this->url); // Set URL
 
