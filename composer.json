@@ -5,15 +5,11 @@
   "keywords": ["http", "http-client"],
   "license": "MIT",
   "require": {
-    "php": ">=7.0.0"
+    "php": ">=7.1.0"
   },
   "autoload": {
     "psr-4": {
-      "HttpClient\\": ["src/HttpClient"]
-    },
-    "files": [
-      "src/HttpClient.php",
-      "src/HttpClientException.php"
-    ]
+      "HttpClient\\": ["src"]
+    }
   }
 }
