@@ -10,14 +10,14 @@
  * https://github.com/furqansiddiqui/http-client/blob/master/LICENSE.md
  */
 
-declare(strict_type=1);
+declare(strict_types=1);
 
 namespace HttpClient\Exception;
 
 /**
- * Class SSLException
+ * Class AuthenticationException
  * @package HttpClient\Exception
  */
-class SSLException extends RequestException
+class AuthenticationException extends RequestException
 {
 }
