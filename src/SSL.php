@@ -50,7 +50,6 @@ class SSL
     }
 
     /**
-     *
      * @param bool $bool
      * @return SSL
      */
