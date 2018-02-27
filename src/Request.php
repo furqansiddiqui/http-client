@@ -224,7 +224,7 @@ class Request
             }
 
             if (strtolower(trim(explode(";", $responseType)[0])) !== "application/json") {
-                throw new ResponseException('Expected "application/json", got "%s"', $responseType);
+                throw new ResponseException(sprintf('Expected "application/json", got "%s"', $responseType));
             }
 
             return new JSONResponse($responseCode, $responseHeaders, $response); // Return
