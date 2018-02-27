@@ -53,6 +53,15 @@ class JSONResponse extends HttpClientResponse
     }
 
     /**
+     * @param string $key
+     * @return bool
+     */
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
      * @return array
      */
     public function array(): array
