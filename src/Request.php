@@ -220,11 +220,14 @@ class Request
         // Prepare response
         if ($this->json) {
             if (!is_string($responseType)) {
-                throw new ResponseException('Invalid "Content-type" header received, expecting JSON');
+                throw new ResponseException('Invalid "Content-type" header received, expecting JSON', $responseCode);
             }
 
             if (strtolower(trim(explode(";", $responseType)[0])) !== "application/json") {
-                throw new ResponseException(sprintf('Expected "application/json", got "%s"', $responseType));
+                throw new ResponseException(
+                    sprintf('Expected "application/json", got "%s"', $responseType),
+                    $responseCode
+                );
             }
 
             return new JSONResponse($responseCode, $responseHeaders, $response); // Return
