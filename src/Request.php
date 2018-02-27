@@ -149,7 +149,7 @@ class Request
 
         // SSL?
         if (strtolower(substr($this->url, 0, 5)) === "https") {
-            call_user_func([$this->ssl(), "register"]); // Register SSL options
+            call_user_func([$this->ssl(), "register"], $ch); // Register SSL options
         }
 
         // Payload
@@ -184,7 +184,7 @@ class Request
 
         // Authentication
         if ($this->auth) {
-            call_user_func([$this->auth, "register"]);
+            call_user_func([$this->auth, "register"], $ch);
         }
 
         // Finalise request
