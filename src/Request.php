@@ -121,7 +121,7 @@ class Request
      */
     public function header(string $header, string $value): self
     {
-        $this->headers[$header] = $value;
+        $this->headers[] = sprintf('%s: %s', $header, $value);
         return $this;
     }
 
