@@ -34,6 +34,8 @@ class Response extends HttpClientResponse
         if (!is_string($body) && !is_null($body)) {
             throw new ResponseException('Invalid response body');
         }
+
+        $this->body = $body;
     }
 
     /**
