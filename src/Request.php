@@ -221,7 +221,8 @@ class Request
         curl_close($ch);
 
         // Prepare response
-        if ($this->json || $responseType === "application/json") {
+        $jsonResponse = is_string($responseType) && preg_match('/json/', $responseType) ? true : $this->json;
+        if ($jsonResponse) {
             if (!is_string($responseType)) {
                 throw new ResponseException('Invalid "Content-type" header received, expecting JSON', $responseCode);
             }
