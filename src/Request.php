@@ -82,6 +82,7 @@ class Request
 
     /**
      * @return SSL
+     * @throws Exception\SSLException
      */
     public function ssl(): SSL
     {
@@ -190,7 +191,9 @@ class Request
         // Finalise request
         $responseHeaders = [];
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) use (&$responseHeaders) {
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, function (
+            /** @noinspection PhpUnusedParameterInspection */
+            $ch, $header) use (&$responseHeaders) {
             $responseHeaders[] = $header;
             return strlen($header);
         });
@@ -218,7 +221,7 @@ class Request
         curl_close($ch);
 
         // Prepare response
-        if ($this->json) {
+        if ($this->json || $responseType === "application/json") {
             if (!is_string($responseType)) {
                 throw new ResponseException('Invalid "Content-type" header received, expecting JSON', $responseCode);
             }

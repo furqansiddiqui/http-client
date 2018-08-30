@@ -21,11 +21,12 @@ use HttpClient\Exception\HttpClientException;
  */
 class HttpClient
 {
-    const VERSION = "0.3.0";
+    const VERSION = "0.3.2";
 
     /**
      * @param string $url
      * @return Request
+     * @throws HttpClientException
      */
     public static function Get(string $url): Request
     {
@@ -35,6 +36,7 @@ class HttpClient
     /**
      * @param string $url
      * @return Request
+     * @throws HttpClientException
      */
     public static function Post(string $url): Request
     {
@@ -44,6 +46,7 @@ class HttpClient
     /**
      * @param string $url
      * @return Request
+     * @throws HttpClientException
      */
     public static function Put(string $url): Request
     {
@@ -53,6 +56,7 @@ class HttpClient
     /**
      * @param string $url
      * @return Request
+     * @throws HttpClientException
      */
     public static function Delete(string $url): Request
     {
