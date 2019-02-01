@@ -35,6 +35,8 @@ class Request
     private $headers;
     /** @var null|array */
     private $payload;
+    /** @var null|string */
+    private $payloadSendJSON;
     /** @var bool */
     private $json;
     /** @var null|SSL */
@@ -107,10 +109,15 @@ class Request
 
     /**
      * @param array $data
+     * @param bool|null $sendAsJSON
      * @return Request
      */
-    public function payload(array $data): self
+    public function payload(array $data, ?bool $sendAsJSON = null): self
     {
+        if ($sendAsJSON) {
+            $this->payloadSendJSON = true;
+        }
+
         $this->payload = $data;
         return $this;
     }
@@ -161,7 +168,7 @@ class Request
             default:
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
                 if ($this->payload) {
-                    if ($this->json) {
+                    if ($this->json || $this->payloadSendJSON) {
                         $payload = json_encode($this->payload);
                         if (!$payload) {
                             throw new RequestException('Failed to JSON encode the payload');
