@@ -21,7 +21,7 @@ use HttpClient\Exception\HttpClientException;
  */
 class HttpClient
 {
-    const VERSION = "0.3.3";
+    const VERSION = "0.3.5";
 
     /**
      * @param string $url
