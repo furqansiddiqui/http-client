@@ -164,6 +164,12 @@ class Request
         switch ($this->method) {
             case "GET":
                 curl_setopt($ch, CURLOPT_HTTPGET, 1);
+                if ($this->payload) {
+                    // Override URL
+                    $urlSep = parse_url($this->url, PHP_URL_QUERY) ? "&" : "?";
+                    curl_setopt($ch, CURLOPT_URL, $this->url . $urlSep . http_build_query($this->payload));
+                }
+
                 break;
             default:
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
