@@ -203,7 +203,6 @@ class Request
         return new Response($this->_client, $res, $this->id);
     }
 
-
     /**
      * @param array $obj
      * @throws JSON_RPC_RequestException
