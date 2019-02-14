@@ -132,6 +132,17 @@ class JSON_RPC
     }
 
     /**
+     * @param string $httpMethod
+     * @param string $endpoint
+     * @return JSON_RPC\Request
+     * @throws Exception\JSON_RPC_RequestException
+     */
+    public function request(string $httpMethod, string $endpoint): JSON_RPC\Request
+    {
+        return new JSON_RPC\Request($this, $endpoint, $httpMethod);
+    }
+
+    /**
      * @param string $endpoint
      * @return JSON_RPC\Request
      * @throws Exception\JSON_RPC_RequestException
