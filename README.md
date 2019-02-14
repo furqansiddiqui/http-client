@@ -1,4 +1,4 @@
-#http-client
+# Straightforward HTTP client
 
 Straightforward HTTP client based on PHP's Client URL Library
 
@@ -11,6 +11,12 @@ Straightforward HTTP client based on PHP's Client URL Library
 
 `composer require furqansiddiqui/http-client`
 
-# Usage
+## Usage
+
+### JSON RPC specs 1.0 & 2.0
+
+This lib includes JSON RPC 1.0 & 2.0 clients
+
+### HTTP Methods
 
 This library supports `GET`,`POST`,`PUT`,`DELETE` HTTP methods
