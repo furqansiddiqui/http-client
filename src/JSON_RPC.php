@@ -10,7 +10,6 @@ use HttpClient\Exception\JSON_RPC_Exception;
  * @package HttpClient
  * @property-read string $specification
  * @property-read string $version
- * @property-read string $url
  */
 class JSON_RPC
 {
@@ -52,12 +51,18 @@ class JSON_RPC
             case "specification":
             case "version":
                 return $this->_spec;
-            case "url":
-                $protocol = $this->ssl ? "https" : "http";
-                return sprintf('%s://%s:%d', $protocol, $this->host, $this->port);
         }
 
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function url(): string
+    {
+        $protocol = $this->ssl ? "https" : "http";
+        return sprintf('%s://%s:%d', $protocol, $this->host, $this->port);
     }
 
     /**
