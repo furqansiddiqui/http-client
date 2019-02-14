@@ -21,7 +21,8 @@ use HttpClient\Exception\HttpClientException;
  */
 class HttpClient
 {
-    const VERSION = "0.4.1";
+    public const VERSION = "0.4.1";
+    public const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 
     /**
      * @param string $url
@@ -66,10 +67,10 @@ class HttpClient
     /**
      * @param string $host
      * @param int $port
-     * @return JSON_RPC
+     * @return json_RPC
      * @throws Exception\JSON_RPC_Exception
      */
-    public static function JSON_RPC_V1(string $host, int $port): JSON_RPC
+    public static function JSON_RPC_V1(string $host, int $port): json_RPC
     {
         return (new JSON_RPC("1.0"))
             ->server($host, $port);
@@ -78,10 +79,10 @@ class HttpClient
     /**
      * @param string $host
      * @param int $port
-     * @return JSON_RPC
+     * @return json_RPC
      * @throws Exception\JSON_RPC_Exception
      */
-    public static function JSON_RPC_V2(string $host, int $port): JSON_RPC
+    public static function JSON_RPC_V2(string $host, int $port): json_RPC
     {
         return (new JSON_RPC("2.0"))
             ->server($host, $port);
