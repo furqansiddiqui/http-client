@@ -130,4 +130,44 @@ class JSON_RPC
 
         return $this->auth;
     }
+
+    /**
+     * @param string $endpoint
+     * @return JSON_RPC\Request
+     * @throws Exception\JSON_RPC_RequestException
+     */
+    public function get(string $endpoint): JSON_RPC\Request
+    {
+        return new JSON_RPC\Request($this, $endpoint, 'GET');
+    }
+
+    /**
+     * @param string $endpoint
+     * @return JSON_RPC\Request
+     * @throws Exception\JSON_RPC_RequestException
+     */
+    public function post(string $endpoint): JSON_RPC\Request
+    {
+        return new JSON_RPC\Request($this, $endpoint, 'POST');
+    }
+
+    /**
+     * @param string $endpoint
+     * @return JSON_RPC\Request
+     * @throws Exception\JSON_RPC_RequestException
+     */
+    public function put(string $endpoint): JSON_RPC\Request
+    {
+        return new JSON_RPC\Request($this, $endpoint, 'PUT');
+    }
+
+    /**
+     * @param string $endpoint
+     * @return JSON_RPC\Request
+     * @throws Exception\JSON_RPC_RequestException
+     */
+    public function delete(string $endpoint): JSON_RPC\Request
+    {
+        return new JSON_RPC\Request($this, $endpoint, 'DELETE');
+    }
 }
