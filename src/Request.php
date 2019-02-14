@@ -174,7 +174,7 @@ class Request
      */
     public function send(): HttpClientResponse
     {
-        HttpClient::Test(); // Prerequisites check
+        //HttpClient::Test(); // Prerequisites check
 
         $ch = curl_init(); // Init cURL handler
         curl_setopt($ch, CURLOPT_URL, $this->url); // Set URL
