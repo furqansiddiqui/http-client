@@ -220,12 +220,12 @@ class Request
                 }
             }
 
-            if (is_scalar($value) && is_null($value)) {
+            if (is_scalar($value) || is_null($value)) {
                 continue; // Scalar values are OK
             }
 
             if (is_array($value)) {
-                $this->validateParams($value);
+                $this->requestParamsValidation($value);
                 continue;
             }
 
