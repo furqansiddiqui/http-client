@@ -79,7 +79,7 @@ class JSON_RPC
                         call_user_func_array([$req, "obj_ssl"], [$this->ssl]);
                     }
                 }
-                break;
+                return;
         }
 
         throw new JSON_RPC_Exception('Cannot call inaccessible method');

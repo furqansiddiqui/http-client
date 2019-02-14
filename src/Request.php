@@ -79,13 +79,13 @@ class Request
                 if ($auth instanceof Authentication) {
                     $this->auth = $auth;
                 }
-                break;
+                return;
             case "obj_ssl":
                 $ssl = $arguments[0] ?? null;
                 if ($ssl instanceof SSL) {
                     $this->ssl = $ssl;
                 }
-                break;
+                return;
         }
 
         throw new RequestException('Cannot call inaccessible method');
