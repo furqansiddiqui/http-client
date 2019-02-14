@@ -20,6 +20,7 @@ use HttpClient\Exception\JSON_RPC_ResponseException;
 use HttpClient\HttpClient;
 use HttpClient\HttpStatusCodes;
 use HttpClient\JSON_RPC;
+use HttpClient\Response\JSONResponse;
 
 /**
  * Class Request
@@ -70,6 +71,7 @@ class Request
         // Endpoint
         $endpoint = trim($endpoint, "/");
         if ($endpoint) {
+            $endpoint = "/" . $endpoint;
             if (!preg_match('/^(\/[\w\-\.]+)+$/', $endpoint)) {
                 throw new JSON_RPC_RequestException('Invalid API endpoint');
             }
@@ -163,7 +165,7 @@ class Request
             $payload["id"] = $this->id;
         }
 
-        $req = new \HttpClient\Request($this->_httpMethod, $this->_client->url . $this->_endpoint);
+        $req = new \HttpClient\Request($this->_httpMethod, $this->_client->url() . $this->_endpoint);
         $req->payload($payload, true); // Send as JSON
 
         // Set Authentication and SSL/TLS config
@@ -175,9 +177,25 @@ class Request
             throw new JSON_RPC_RequestException($e->getMessage(), $e->getCode());
         }
 
-        // Expected Success HTTP Status Code
+        if (!$res instanceof JSONResponse) {
+            // First check if failing HTTP status code
+            $this->checkHttpStatusCode($res->code());
+
+            // If (somehow) HTTP status code passes, throw "no response" exception
+            throw new JSON_RPC_ResponseException('No response was received', $res->code());
+        }
+
+        // Create JSON_RPC\Response instance
+        return new Response($this->_client, $res, $this->id);
+    }
+
+    /**
+     * @param int $responseStatusCode
+     * @throws JSON_RPC_ResponseException
+     */
+    private function checkHttpStatusCode(int $responseStatusCode): void
+    {
         $badStatusCode = false;
-        $responseStatusCode = $res->code();
         $expectedStatusCode = $this->_expectedHttpStatusCode;
         if ($expectedStatusCode) {
             if ($expectedStatusCode !== $responseStatusCode) {
@@ -201,8 +219,6 @@ class Request
                 sprintf('HTTP status %d%s, expected %s', $responseStatusCode, $responseStatusCodeMessage, $expectedStatusCode)
             );
         }
-
-        return new Response($this->_client, $res, $this->id);
     }
 
     /**

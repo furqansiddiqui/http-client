@@ -16,7 +16,6 @@ namespace HttpClient\JSON_RPC;
 
 use HttpClient\Exception\JSON_RPC_ResponseException;
 use HttpClient\JSON_RPC;
-use HttpClient\Response\HttpClientResponse;
 use HttpClient\Response\JSONResponse;
 
 /**
@@ -40,16 +39,12 @@ class Response
     /**
      * Response constructor.
      * @param JSON_RPC $client
-     * @param HttpClientResponse $response
+     * @param JSONResponse $response
      * @param null $id
      * @throws JSON_RPC_ResponseException
      */
-    public function __construct(JSON_RPC $client, HttpClientResponse $response, $id = null)
+    public function __construct(JSON_RPC $client, JSONResponse $response, $id = null)
     {
-        if (!$response instanceof JSONResponse) {
-            throw new JSON_RPC_ResponseException('Unexpected response type, expected JSON');
-        }
-
         $this->_response = $response;
 
         // Version
