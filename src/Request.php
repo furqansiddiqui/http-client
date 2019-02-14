@@ -44,7 +44,6 @@ class Request
     /** @var null|Authentication */
     private $auth;
 
-
     /**
      * Request constructor.
      * @param string $method
@@ -65,6 +64,31 @@ class Request
         $this->headers = [];
         $this->json = false;
         $this->url($url);
+    }
+
+    /**
+     * @param string $method
+     * @param $arguments
+     * @throws RequestException
+     */
+    public function __call(string $method, $arguments)
+    {
+        switch ($method) {
+            case "obj_auth":
+                $auth = $arguments[0] ?? null;
+                if ($auth instanceof Authentication) {
+                    $this->auth = $auth;
+                }
+                break;
+            case "obj_ssl":
+                $ssl = $arguments[0] ?? null;
+                if ($ssl instanceof SSL) {
+                    $this->ssl = $ssl;
+                }
+                break;
+        }
+
+        throw new RequestException('Cannot call inaccessible method');
     }
 
     /**
