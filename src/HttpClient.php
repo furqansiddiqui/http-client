@@ -21,7 +21,7 @@ use HttpClient\Exception\HttpClientException;
  */
 class HttpClient
 {
-    const VERSION = "0.3.5";
+    const VERSION = "0.4.1";
 
     /**
      * @param string $url
@@ -61,6 +61,30 @@ class HttpClient
     public static function Delete(string $url): Request
     {
         return new Request('DELETE', $url);
+    }
+
+    /**
+     * @param string $host
+     * @param int $port
+     * @return JSON_RPC
+     * @throws Exception\JSON_RPC_Exception
+     */
+    public static function JSON_RPC_V1(string $host, int $port): JSON_RPC
+    {
+        return (new JSON_RPC("1.0"))
+            ->server($host, $port);
+    }
+
+    /**
+     * @param string $host
+     * @param int $port
+     * @return JSON_RPC
+     * @throws Exception\JSON_RPC_Exception
+     */
+    public static function JSON_RPC_V2(string $host, int $port): JSON_RPC
+    {
+        return (new JSON_RPC("2.0"))
+            ->server($host, $port);
     }
 
     /**
