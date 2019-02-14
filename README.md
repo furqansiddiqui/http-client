@@ -2,12 +2,12 @@
 
 Straightforward HTTP client based on PHP's Client URL Library
 
-# Prerequisites
+## Prerequisites
 
 - PHP >= 7.1
 - cURL and JSON extensions installed and enabled
 
-# Installation
+## Installation
 
 `composer require furqansiddiqui/http-client`
 
