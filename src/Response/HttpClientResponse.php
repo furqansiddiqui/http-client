@@ -38,6 +38,10 @@ abstract class HttpClientResponse
         $this->handleBody($body);
     }
 
+    /**
+     * @param $body
+     * @return void
+     */
     abstract protected function handleBody($body): void;
 
     /**
