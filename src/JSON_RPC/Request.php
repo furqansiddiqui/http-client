@@ -212,11 +212,14 @@ class Request
         if ($badStatusCode) {
             $responseStatusCodeMessage = HttpStatusCodes::MESSAGES[$responseStatusCode] ?? null;
             if ($responseStatusCodeMessage) {
-                $responseStatusCodeMessage = " (" . $responseStatusCodeMessage . ")";
+                throw new JSON_RPC_ResponseException(
+                    sprintf('%d — %s', $responseStatusCode, $responseStatusCodeMessage),
+                    $responseStatusCode
+                );
             }
 
             throw new JSON_RPC_ResponseException(
-                sprintf('HTTP status %d%s, expected %s', $responseStatusCode, $responseStatusCodeMessage, $expectedStatusCode)
+                sprintf('HTTP status %d, expected %s', $responseStatusCode, $expectedStatusCode)
             );
         }
     }
