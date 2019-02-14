@@ -68,9 +68,11 @@ class Request
 
 
         // Endpoint
-        $endpoint = "/" . trim($endpoint, "/");
-        if (!preg_match('/^(\/[\w\-\.]+)+$/', $endpoint)) {
-            throw new JSON_RPC_RequestException('Invalid API endpoint');
+        if ($endpoint) {
+            $endpoint = "/" . trim($endpoint, "/");
+            if (!preg_match('/^(\/[\w\-\.]+)+$/', $endpoint)) {
+                throw new JSON_RPC_RequestException('Invalid API endpoint');
+            }
         }
 
         $this->_endpoint = $endpoint;
