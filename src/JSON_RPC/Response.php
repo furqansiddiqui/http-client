@@ -70,9 +70,9 @@ class Response
         // Result
         if (!$this->error) {
             $this->result = $response->get("result");
-            if (!$this->result) {
+            /*if (!$this->result) {
                 throw new JSON_RPC_ResponseException('JSON RPC required prop "result" not found');
-            }
+            }*/
 
             if (!is_scalar($this->result) && !is_array($this->result)) {
                 throw new JSON_RPC_ResponseException(
