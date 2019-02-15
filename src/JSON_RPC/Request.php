@@ -226,17 +226,20 @@ class Request
 
     /**
      * @param array $obj
+     * @param int $level
      * @throws JSON_RPC_RequestException
      */
-    private function requestParamsValidation(array $obj): void
+    private function requestParamsValidation(array $obj, int $level = 0): void
     {
         $spec = $this->_client->specification;
         foreach ($obj as $i => $value) {
-            if ($spec !== "2.0") {
-                if (!is_int($i)) {
-                    throw new JSON_RPC_RequestException(
-                        sprintf('JSON RPC %s does not accept named params', $spec)
-                    );
+            if ($level === 0) {
+                if ($spec !== "2.0") {
+                    if (!is_int($i)) {
+                        throw new JSON_RPC_RequestException(
+                            sprintf('JSON RPC %s does not accept named params', $spec)
+                        );
+                    }
                 }
             }
 
@@ -245,7 +248,7 @@ class Request
             }
 
             if (is_array($value)) {
-                $this->requestParamsValidation($value);
+                $this->requestParamsValidation($value, $level + 1);
                 continue;
             }
 
