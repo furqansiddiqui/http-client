@@ -39,6 +39,8 @@ class Request
     private $payloadSendJSON;
     /** @var bool */
     private $json;
+    /** @var bool */
+    private $forceValidateJSON;
     /** @var null|SSL */
     private $ssl;
     /** @var null|Authentication */
@@ -63,6 +65,7 @@ class Request
         $this->method = $method;
         $this->headers = [];
         $this->json = false;
+        $this->forceValidateJSON = true;
         $this->url($url);
     }
 
@@ -158,11 +161,14 @@ class Request
     }
 
     /**
+     * @param bool $json
+     * @param bool $forceValidateResponse
      * @return Request
      */
-    public function json(): self
+    public function json(bool $json = true, bool $forceValidateResponse = true): self
     {
-        $this->json = true;
+        $this->json = $json;
+        $this->forceValidateJSON = $forceValidateResponse;
         return $this;
     }
 
@@ -260,18 +266,24 @@ class Request
         // Prepare response
         $jsonResponse = is_string($responseType) && preg_match('/json/', $responseType) ? true : $this->json;
         if ($jsonResponse) {
-            if (!is_string($responseType)) {
-                throw new ResponseException('Invalid "Content-type" header received, expecting JSON', $responseCode);
-            }
+            try {
+                if (!is_string($responseType)) {
+                    throw new ResponseException('Invalid "Content-type" header received, expecting JSON', $responseCode);
+                }
 
-            if (strtolower(trim(explode(";", $responseType)[0])) !== "application/json") {
-                throw new ResponseException(
-                    sprintf('Expected "application/json", got "%s"', $responseType),
-                    $responseCode
-                );
-            }
+                if (strtolower(trim(explode(";", $responseType)[0])) !== "application/json") {
+                    throw new ResponseException(
+                        sprintf('Expected "application/json", got "%s"', $responseType),
+                        $responseCode
+                    );
+                }
 
-            return new JSONResponse($responseCode, $responseHeaders, $response); // Return
+                return new JSONResponse($responseCode, $responseHeaders, $response); // Return
+            } catch (ResponseException $e) {
+                if ($this->forceValidateJSON) {
+                    throw $e;
+                }
+            }
         }
 
         return new Response($responseCode, $responseHeaders, $response); // Return
