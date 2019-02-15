@@ -74,7 +74,7 @@ class Response
                 throw new JSON_RPC_ResponseException('JSON RPC required prop "result" not found');
             }*/
 
-            if (!is_scalar($this->result) && !is_array($this->result)) {
+            if (!is_scalar($this->result) && !is_array($this->result) && !is_null($this->result)) {
                 throw new JSON_RPC_ResponseException(
                     sprintf('Invalid data type "%s" for "result", ', gettype($this->result))
                 );
