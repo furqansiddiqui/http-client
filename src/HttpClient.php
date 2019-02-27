@@ -24,6 +24,17 @@ class HttpClient
     public const VERSION = "0.4.1";
     public const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 
+    // HTTP version
+    public const HTTP_VERSION_1 = CURL_HTTP_VERSION_1_0;
+    public const HTTP_VERSION_1_1 = CURL_HTTP_VERSION_1_1;
+    public const HTTP_VERSION_2 = CURL_HTTP_VERSION_2_0;
+
+    public const HTTP_VERSIONS = [
+        self::HTTP_VERSION_1,
+        self::HTTP_VERSION_1_1,
+        self::HTTP_VERSION_2
+    ];
+
     /**
      * @param string $url
      * @return Request

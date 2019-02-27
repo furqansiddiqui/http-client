@@ -27,6 +27,8 @@ use HttpClient\Response\Response;
  */
 class Request
 {
+    /** @var null|int */
+    private $httpVersion;
     /** @var string */
     private $method;
     /** @var string */
@@ -150,6 +152,21 @@ class Request
     }
 
     /**
+     * @param int $flag
+     * @return Request
+     * @throws RequestException
+     */
+    public function useHttpVersion(int $flag): self
+    {
+        if (!in_array($flag, HttpClient::HTTP_VERSIONS)) {
+            throw new RequestException('Invalid HTTP version to use');
+        }
+
+        $this->httpVersion = $flag;
+        return $this;
+    }
+
+    /**
      * @param string $header
      * @param string $value
      * @return Request
@@ -184,6 +201,9 @@ class Request
 
         $ch = curl_init(); // Init cURL handler
         curl_setopt($ch, CURLOPT_URL, $this->url); // Set URL
+        if ($this->httpVersion) {
+            curl_setopt($ch, CURLOPT_HTTP_VERSION, $this->httpVersion);
+        }
 
         // SSL?
         if (strtolower(substr($this->url, 0, 5)) === "https") {

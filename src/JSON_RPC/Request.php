@@ -32,6 +32,8 @@ class Request
     private $_client;
     /** @var bool */
     private $_validateParams;
+    /** @var null|int */
+    private $_httpVersion;
     /** @var string */
     private $_httpMethod;
     /** @var string */
@@ -82,6 +84,21 @@ class Request
         }
 
         $this->_endpoint = $endpoint;
+    }
+
+    /**
+     * @param int $flag
+     * @return Request
+     * @throws JSON_RPC_RequestException
+     */
+    public function useHttpVersion(int $flag): self
+    {
+        if (!in_array($flag, HttpClient::HTTP_VERSIONS)) {
+            throw new JSON_RPC_RequestException('Invalid HTTP version to use');
+        }
+
+        $this->_httpVersion = $flag;
+        return $this;
     }
 
     /**
@@ -182,6 +199,11 @@ class Request
 
         $req = new \HttpClient\Request($this->_httpMethod, $this->_client->url() . $this->_endpoint);
         $req->payload($payload, true); // Send as JSON
+
+        // HTTP version
+        if ($this->_httpVersion) {
+            $req->useHttpVersion($this->_httpVersion);
+        }
 
         // Set custom headers
         if ($this->headers) {
