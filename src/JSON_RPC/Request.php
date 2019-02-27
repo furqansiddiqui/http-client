@@ -45,6 +45,8 @@ class Request
     private $method;
     /** @var null|array */
     private $params;
+    /** @var array */
+    private $headers;
 
     /**
      * Request constructor.
@@ -55,6 +57,8 @@ class Request
      */
     public function __construct(JSON_RPC $client, string $endpoint, string $httpMethod = 'POST')
     {
+        $this->headers = [];
+
         // JSON RPC client instance and request config
         $this->_client = $client;
         $this->_validateParams = true;
@@ -78,6 +82,17 @@ class Request
         }
 
         $this->_endpoint = $endpoint;
+    }
+
+    /**
+     * @param string $header
+     * @param string $value
+     * @return Request
+     */
+    public function header(string $header, string $value): self
+    {
+        $this->headers[$header] = $value;
+        return $this;
     }
 
     /**
@@ -167,6 +182,13 @@ class Request
 
         $req = new \HttpClient\Request($this->_httpMethod, $this->_client->url() . $this->_endpoint);
         $req->payload($payload, true); // Send as JSON
+
+        // Set custom headers
+        if ($this->headers) {
+            foreach ($this->headers as $header => $headerValue) {
+                $req->header($header, $headerValue);
+            }
+        }
 
         // Set Authentication and SSL/TLS config
         call_user_func_array([$this->_client, "prepare_req_objs"], [$req]);
