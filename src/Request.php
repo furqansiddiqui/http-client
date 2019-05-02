@@ -47,6 +47,8 @@ class Request
     private $ssl;
     /** @var null|Authentication */
     private $auth;
+    /** @var null|string */
+    private $userAgent;
 
     /**
      * Request constructor.
@@ -190,6 +192,16 @@ class Request
     }
 
     /**
+     * @param string $userAgent
+     * @return Request
+     */
+    public function userAgent(string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+        return $this;
+    }
+
+    /**
      * @return HttpClientResponse
      * @throws HttpClientException
      * @throws RequestException
@@ -249,6 +261,11 @@ class Request
         // Authentication
         if ($this->auth) {
             call_user_func([$this->auth, "register"], $ch);
+        }
+
+        // User agent
+        if ($this->userAgent) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
         }
 
         // Finalise request
