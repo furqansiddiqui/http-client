@@ -21,7 +21,7 @@ use HttpClient\Exception\HttpClientException;
  */
 class HttpClient
 {
-    public const VERSION = "0.4.3";
+    public const VERSION = "0.4.4";
     public const REQUEST_METHODS = ["GET", "POST", "PUT", "DELETE"];
 
     // HTTP version
