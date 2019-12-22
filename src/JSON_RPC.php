@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace HttpClient;
 
 use HttpClient\Exception\JSON_RPC_Exception;
+use HttpClient\Exception\RequestException;
 
 /**
  * Class JSON_RPC
  * @package HttpClient
  * @property-read string $specification
  * @property-read string $version
+ * @property-read int|null $timeOut
+ * @property-read int|null $connectTimeout
  */
 class JSON_RPC
 {
@@ -26,6 +29,10 @@ class JSON_RPC
     private $auth;
     /** @var null|SSL */
     private $ssl;
+    /** @var int|null */
+    private $timeOut;
+    /** @var int|null */
+    private $connectTimeout;
 
     /**
      * JSON_RPC constructor.
@@ -51,9 +58,30 @@ class JSON_RPC
             case "specification":
             case "version":
                 return $this->_spec;
+            case "timeOut":
+            case "connectTimeout":
+                return $this->$prop;
         }
 
         return null;
+    }
+
+    /**
+     * @param int|null $timeOut
+     * @param int|null $connectTimeout
+     * @return $this
+     * @throws JSON_RPC_Exception
+     */
+    public function setTimeout(?int $timeOut = null, ?int $connectTimeout = null): self
+    {
+        $this->timeOut = $timeOut > 0 ? $timeOut : null;
+        $this->connectTimeout = $connectTimeout > 0 ? $connectTimeout : null;
+
+        if ($this->connectTimeout > $this->timeOut) {
+            throw new JSON_RPC_Exception('connectTimeout value cannot exceed timeOut');
+        }
+
+        return $this;
     }
 
     /**

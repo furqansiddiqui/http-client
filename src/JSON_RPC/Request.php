@@ -212,6 +212,9 @@ class Request
             }
         }
 
+        // Timeouts?
+        $req->setTimeout($this->_client->timeOut, $this->_client->connectTimeout);
+
         // Set Authentication and SSL/TLS config
         call_user_func_array([$this->_client, "prepare_req_objs"], [$req]);
 

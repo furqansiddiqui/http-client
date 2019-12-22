@@ -49,6 +49,10 @@ class Request
     private $auth;
     /** @var null|string */
     private $userAgent;
+    /** @var int|null */
+    private $timeOut;
+    /** @var int|null */
+    private $connectTimeout;
 
     /**
      * Request constructor.
@@ -96,6 +100,29 @@ class Request
         }
 
         throw new RequestException('Cannot call inaccessible method');
+    }
+
+    /**
+     * @param int|null $timeOut
+     * @param int|null $connectTimeout
+     * @return $this
+     * @throws RequestException
+     */
+    public function setTimeout(?int $timeOut = null, ?int $connectTimeout = null): self
+    {
+        if ($timeOut > 0) {
+            $this->timeOut = $timeOut;
+        }
+
+        if ($connectTimeout > 0) {
+            $this->connectTimeout = $connectTimeout;
+        }
+
+        if ($connectTimeout > $timeOut) {
+            throw new RequestException('connectTimeout value cannot exceed timeOut');
+        }
+
+        return $this;
     }
 
     /**
@@ -266,6 +293,15 @@ class Request
         // User agent
         if ($this->userAgent) {
             curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+        }
+
+        // Timeouts
+        if ($this->timeOut) {
+            curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeOut);
+        }
+
+        if ($this->connectTimeout) {
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
         }
 
         // Finalise request
